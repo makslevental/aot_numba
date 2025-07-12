@@ -1,0 +1,40 @@
+name: Test
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Cpp
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: llvm
+          # vcvarsall: true
+          cmake: true
+          ninja: true
+          # vcpkg: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Build
+        run: |
+          
+          pip install -r requirements.txt
+
+          # compile my_module shared object
+          python demo.py
+
+          # compile exec that links my_module
+          cmake -S . -B build -GNinja
+          cmake --build build
+          
+          ./build/aot_numba
+
+      - name: Test
+        run: |
+          
+          ./build/aot_numba
