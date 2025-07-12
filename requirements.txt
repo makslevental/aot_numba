@@ -1,0 +1,5 @@
+llvmlite==0.44.0
+ninja==1.11.1.4
+numba==0.61.2
+numpy==2.2.6
+setuptools==80.9.0
